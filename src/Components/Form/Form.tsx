@@ -5,6 +5,7 @@ import formikConfig from './formikConfig/formikConfig'
 
 
 
+
 const Form = () => {
   return (
     <Formik {...formikConfig}>
@@ -13,9 +14,9 @@ const Form = () => {
         <TextField name='state' label='Estado'/>
         <TextField name='street' label='Rua'/>
         <TextField name='district' label='Bairro'/>
-        <TextField name='CEP' label='CEP'/>
+        <TextField name='CEP' label='CEP' mask={"99999-999"}/>
         <TextField name='name' label='Nome'/>
-        <TextField name='CPF' label='CPF'/>
+        <TextField name='CPF' label='CPF' mask={"999.999.999-99"}/>
         <TextField name='email' label='Email'/>
         <TextField name='message' label='Mensagem'/>
         <input type='submit'/>

@@ -38,14 +38,23 @@ yup.setLocale({
 
 const { string,object} = yup
 
+export const cep ={
+    regex:  /^[0-9]{5}-[0-9]{3}$/,
+    error: "tem o formato de CEP inválido"
+}
+export const cpf ={
+    regex: /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/,
+    error: "tem o formato de CPF inválido"
+}
+
 const validationSchema = object({
     city: string().required(),
     state: string().required(),
     street: string().required(),
     district: string().required(),
-    CEP: string().required(),
+    CEP: string().matches(cep.regex,cep.error).required(),
     name: string().required(),
-    CPF: string().required(),
+    CPF: string().matches(cpf.regex,cpf.error).required(),
     email: string().email().required(),
     message: string().required(),
     cordenates: string().required(),
