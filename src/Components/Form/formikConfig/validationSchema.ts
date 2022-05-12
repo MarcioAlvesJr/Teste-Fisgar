@@ -1,9 +1,10 @@
+import { Description } from '@mui/icons-material';
 import * as yup from 'yup';
 
 yup.setLocale({
     mixed: {
       default: "é inválido",
-      required: "é um campo obrigatório",
+      required: "campo obrigatório",
       oneOf: "deve ser um dos seguintes valores: ${values}",
       notOneOf: "não pode ser um dos seguintes valores: ${values}"
     },
@@ -36,22 +37,46 @@ yup.setLocale({
     }
 });
 
-const { string,object} = yup
+const { string,object, array} = yup
 
 export const cep ={
     regex:  /^[0-9]{5}-[0-9]{3}$/,
-    error: "tem o formato de CEP inválido"
+    error: "formato de CEP inválido"
 }
 export const cpf ={
     regex: /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/,
-    error: "tem o formato de CPF inválido"
+    error: "formato de CPF inválido"
+}
+
+const descriptionToFields = (description)=>{
+  try{
+    const [streetNumber, neighborhoodCity, stateCountry] = description.split("-")
+  
+    const fields = {
+      street: streetNumber.split(",")[0].trim(),
+      number: streetNumber.split(",")[1].trim(),
+      neighborhood: neighborhoodCity.split(",")[0].trim(),
+      city: neighborhoodCity.split(",")[1].trim(),
+      state: stateCountry.split(",")[0].trim(),
+      country: stateCountry.split(",")[1].trim(),
+      validFields: true
+    }
+    return fields
+  }catch(e){
+    return {validFields: false}
+  }
 }
 
 const validationSchema = object({
-    city: string().required(),
-    state: string().required(),
-    street: string().required(),
-    district: string().required(),
+    address: object().typeError("campo obrigatório"),
+    adressType: string().when('address', (address, schema)=>{
+      if(!address) return string().required()
+      const fields = descriptionToFields(address.description)
+      
+      return fields.validFields ? string() : string().required(
+        `selecione no formato "Rua, Numero - Bairro, Cidade - Estado, Pais"`
+      )
+    }),
     CEP: string().matches(cep.regex,cep.error).required(),
     name: string().required(),
     CPF: string().matches(cpf.regex,cpf.error).required(),

@@ -1,23 +1,20 @@
 import React from 'react'
+import { PlaceType } from '../GoogleMaps'
 
 export interface FormValues {
-    city: string,
-    state: string,
-    street: string,
-    district: string,
+    address: null | PlaceType,
     CEP: string,
     name: string,
     CPF: string,
     email: string,
     message: string,
     cordenates: string,
-    bulletPoint: string
+    bulletPoint: string,
+    adressType: string
 }
 const initialValues : FormValues = {
-    city: "",
-    state: "",
-    street: "",
-    district: "",
+    adressType: "",
+    address: null,
     CEP: "",
     name: "",
     CPF: "",
