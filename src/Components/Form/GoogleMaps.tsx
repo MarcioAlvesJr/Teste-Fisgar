@@ -6,11 +6,8 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/umd/parse';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-
 import { debounce } from '@mui/material';
 import { useFormikContext } from 'formik';
-import { FormValues } from './formikConfig/initialValues';
-
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
 function loadScript(src: string, position: HTMLElement | null, id: string) {

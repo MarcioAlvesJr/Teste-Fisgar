@@ -1,5 +1,5 @@
 import Form from "./Components/Form/Form";
-import Map from "./Components/Map/Map";
+import Map from "./Components/Map/MapWrapper";
 
 function App() {
   return (
