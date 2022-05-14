@@ -4,6 +4,7 @@ import { Wrapper } from './StepperWrapper.styles'
 
 export const StepperWrapperContext = createContext({} as any)
 
+
 const StepperWrapper = (props) => {
     const {children} = props
     const [title, setTitle] = useState()

@@ -8,6 +8,7 @@ import parse from 'autosuggest-highlight/umd/parse';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { debounce } from '@mui/material';
 import { useFormikContext } from 'formik';
+import useCheckAdressNumber from './useCheckAdressNumber';
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
 function loadScript(src: string, position: HTMLElement | null, id: string) {
@@ -39,12 +40,13 @@ export interface PlaceType {
 }
 
 export default function GoogleMaps() {
+  useCheckAdressNumber()
   const name = "address"
   const formik:any = useFormikContext()
 
   const textFieldProps = {
-    error: formik.errors.adressType? formik.errors.adressType: formik.touched[name] && Boolean(formik.errors[name]),
-    helperText: formik.errors.adressType? formik.errors.adressType :formik.errors?.address?.terms? formik.errors.address.terms:formik.touched[name] && formik.errors[name],
+    error: Boolean(formik.errors[name]),
+    helperText: formik.errors[name],
     onBlur:formik.handleBlur
   }
 
