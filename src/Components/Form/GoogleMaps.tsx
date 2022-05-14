@@ -1,14 +1,14 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/umd/parse';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { debounce } from '@mui/material';
+import { debounce, TextField } from '@mui/material';
 import { useFormikContext } from 'formik';
 import useCheckAdressNumber from './useCheckAdressNumber';
+import { CustomCollapse } from './connectedFields/TextField';
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
 function loadScript(src: string, position: HTMLElement | null, id: string) {
@@ -39,7 +39,7 @@ export interface PlaceType {
   structured_formatting: StructuredFormatting;
 }
 
-export default function GoogleMaps() {
+export default function GoogleMaps({width}) {
   useCheckAdressNumber()
   const name = "address"
   const formik:any = useFormikContext()
@@ -128,9 +128,9 @@ export default function GoogleMaps() {
 
 
   return (
+    <div id="address-wrapper">
     <Autocomplete
-      id="google-map-demo"
-      sx={{ width: 300 }}
+      sx={{ width }}
       getOptionLabel={(option) =>
         typeof option === 'string' ? option : option.description
       }
@@ -148,7 +148,7 @@ export default function GoogleMaps() {
         setInputValue(newInputValue);
       }}
       renderInput={(params) => (
-        <TextField name={name}  variant='standard' {...params} label="Endereço" fullWidth {...textFieldProps}/>
+        <TextField name={name}  {...params} variant="standard" label="Endereço" fullWidth {...textFieldProps} helperText={<CustomCollapse text={textFieldProps.helperText}/>}/>
       )}
       renderOption={(props, option) => {
         const matches = option.structured_formatting.main_text_matched_substrings;
@@ -185,6 +185,6 @@ export default function GoogleMaps() {
           </li>
         );
       }}
-    />
+    /></div>
   );
 }

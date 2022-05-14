@@ -2,6 +2,7 @@ import { Backdrop, Button, CircularProgress, Dialog, DialogActions, DialogConten
 import { Formik, Form as FormikForm, useFormikContext} from 'formik'
 import { useContext, useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
+import { useElementSize } from 'usehooks-ts'
 import fetchPlaceInfo from '../../HTTP/fetchPlaceInfo'
 import { StepperWrapperContext } from '../StepperWrapper/StepperWrapper'
 import TextField from './connectedFields/TextField'
@@ -58,7 +59,7 @@ const useConfirmForm = ()=>{
     {adressInfoMutate.data && 
           <Dialog open={openModal} onClose={handleClose}>
         <DialogTitle>
-          {"Suas informações estão corretas?"}
+          Informaçoes a serem enviadas
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -74,8 +75,7 @@ const useConfirmForm = ()=>{
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Não</Button>
-          <Button  onClick={handleClose} autoFocus disabled={adressInfoMutate.isLoading}>Sim</Button>
+          <Button  onClick={handleClose} autoFocus disabled={adressInfoMutate.isLoading}>Ok</Button>
         </DialogActions>
       </Dialog>}
       <Backdrop
@@ -92,12 +92,11 @@ const useConfirmForm = ()=>{
 
 const ConfigStepper = ()=>{
   const {submitForm} = useFormikContext()
-  const {setActionsBtns, setTitle} = useContext(StepperWrapperContext)
+  const {setActionsBtns} = useContext(StepperWrapperContext)
   
   useEffect(()=>{
-    setTitle("Formulario")
     setActionsBtns(
-      <Button  onClick={submitForm} >Continuar</Button>
+      <Button  onClick={submitForm} >Enviar</Button>
     )
 
   },[submitForm, setActionsBtns])
@@ -106,16 +105,17 @@ const ConfigStepper = ()=>{
 }
 const Form = () => {
   const {Modal, onSubmit} = useConfirmForm()
+  const [fieldsWrappeRef, { width, height }] = useElementSize()
   return (
     <>
     <Formik {...formikConfig} {...{onSubmit}} >
       <FormikForm>
-        <FieldsWrapper>
-          <AdressAutocomplete/>
+        <FieldsWrapper ref={fieldsWrappeRef} >
+          <AdressAutocomplete {...{width}}/>
           <TextField name='name' label='Nome'/>
           <TextField name='CPF' label='CPF' mask={"999.999.999-99"}/>
           <TextField name='email' label='Email'/>
-          <TextField name='message' label='Mensagem'/>
+          <TextField name='message' label='Mensagem' multiline/>
           <ConfigStepper/>
         </FieldsWrapper>
       </FormikForm>

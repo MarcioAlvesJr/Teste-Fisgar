@@ -2,9 +2,14 @@ import styled from 'styled-components'
 
 
 export const FieldsWrapper = styled.div`
-    margin: 1rem;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 1rem;
+    margin: 1rem 0 2rem 0;
+
+    #address-wrapper{
+        grid-column:  1 / -1;
+    }
+
 
 `

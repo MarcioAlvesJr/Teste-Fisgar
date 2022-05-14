@@ -15,6 +15,7 @@ const deleteMap = ()=>{
 }
 function MapWrapper(props) {
   const {mapCenter, drawings, addDrawing} = useContext(MapContext)
+  const [x, y] = mapCenter ? mapCenter : []
 
   const selectedType = useRef("")
 
@@ -24,19 +25,19 @@ function MapWrapper(props) {
     return ()=>{
       deleteMap()
     }
-  },[mapCenter])
+  },[x, y])
 
   // render component
   return (   <>
   <Wrapper>
-    <div id="map" className="map" />
-    <InputLabel htmlFor="type">Desenhar</InputLabel>
+    <InputLabel htmlFor="type">Escolha uma forma para desenhar no mapa</InputLabel>
     <NativeSelect id="type">
       <option value="Circle">Circulo</option>
       <option value="Square">Quadrado</option>
       <option value="Box">Retangulo</option>
-      <option value="Polygon">Poligono</option>
+      <option value="Polygon">Forma Livre</option>
     </NativeSelect>
+    <div id="map" className="map" />
 </Wrapper>
   </>   
   ) 

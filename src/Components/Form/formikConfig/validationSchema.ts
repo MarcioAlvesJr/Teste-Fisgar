@@ -37,31 +37,13 @@ yup.setLocale({
     }
 });
 
-const { string,object, array} = yup
+const { string,object} = yup
 
 export const cpf ={
     regex: /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/,
     error: "formato de CPF inválido"
 }
 
-const descriptionToFields = (description)=>{
-  try{
-    const [streetNumber, neighborhoodCity, stateCountry] = description.split("-")
-  
-    const fields = {
-      street: streetNumber.split(",")[0].trim(),
-      number: streetNumber.split(",")[1].trim(),
-      neighborhood: neighborhoodCity.split(",")[0].trim(),
-      city: neighborhoodCity.split(",")[1].trim(),
-      state: stateCountry.split(",")[0].trim(),
-      country: stateCountry.split(",")[1].trim(),
-      validFields: true
-    }
-    return fields
-  }catch(e){
-    return {validFields: false}
-  }
-}
 
 const validationSchema = object({
     address: object().typeError("campo obrigatório"),    

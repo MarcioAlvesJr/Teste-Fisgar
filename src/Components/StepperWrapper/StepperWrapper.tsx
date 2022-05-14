@@ -1,28 +1,27 @@
 import { Button, Card, CardActions, CardContent, Paper, Typography } from '@mui/material'
 import React, { createContext, useState } from 'react'
-import { Wrapper } from './StepperWrapper.styles'
+import { FormMapWrapper, Wrapper, WrapperCard } from './StepperWrapper.styles'
 
 export const StepperWrapperContext = createContext({} as any)
 
 
 const StepperWrapper = (props) => {
     const {children} = props
-    const [title, setTitle] = useState()
     const [actionsBtns, setActionsBtns] = useState()
   return (
       <Wrapper>
           <Paper elevation={24}>
-                <Card  sx={{ maxWidth: 500 }}>
+                <WrapperCard  >
                     <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">{title}</Typography>
-                    <StepperWrapperContext.Provider value={{setTitle, setActionsBtns}}>
-                        {children}
+                    <Typography gutterBottom variant="h5" component="div">Formulario</Typography>
+                    <StepperWrapperContext.Provider value={{setActionsBtns}}>
+                        <FormMapWrapper>{children}</FormMapWrapper>
                     </StepperWrapperContext.Provider>
                     </CardContent>
                     <CardActions >
                         {actionsBtns}
                     </CardActions>
-                </Card>
+                </WrapperCard>
             </Paper>
     </Wrapper>
   )
