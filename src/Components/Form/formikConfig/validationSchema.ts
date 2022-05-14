@@ -39,10 +39,6 @@ yup.setLocale({
 
 const { string,object, array} = yup
 
-export const cep ={
-    regex:  /^[0-9]{5}-[0-9]{3}$/,
-    error: "formato de CEP inválido"
-}
 export const cpf ={
     regex: /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/,
     error: "formato de CPF inválido"
@@ -68,22 +64,11 @@ const descriptionToFields = (description)=>{
 }
 
 const validationSchema = object({
-    address: object().typeError("campo obrigatório"),
-    adressType: string().when('address', (address, schema)=>{
-      if(!address) return string().required()
-      const fields = descriptionToFields(address.description)
-      
-      return fields.validFields ? string() : string().required(
-        `selecione no formato "Rua, Numero - Bairro, Cidade - Estado, Pais"`
-      )
-    }),
-    CEP: string().matches(cep.regex,cep.error).required(),
+    address: object().typeError("campo obrigatório"),    
     name: string().required(),
     CPF: string().matches(cpf.regex,cpf.error).required(),
     email: string().email().required(),
-    message: string().required(),
-    cordenates: string().required(),
-    bulletPoint: string().required()
+    message: string().required()
 })
 
 
