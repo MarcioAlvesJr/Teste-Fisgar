@@ -20,10 +20,10 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useAppSelector } from '../../../redux/hooks'
 import InfoIcon from '@mui/icons-material/Info';
 const figures = {
-  Circle : {text: "Circulo", icon: <CircleOutlinedIcon/>} ,
+  Circle : {text: "Círculo", icon: <CircleOutlinedIcon/>} ,
   Square :{text: "Quadrado", icon: <SquareOutlinedIcon/>} ,
-  Box: {text: "Retangulo", icon: <RectangleOutlinedIcon/>},
-  Polygon :{text: "Poligono", icon: <PolylineOutlinedIcon/>} ,
+  Box: {text: "Retângulo", icon: <RectangleOutlinedIcon/>},
+  Polygon :{text: "Polígono", icon: <PolylineOutlinedIcon/>} ,
 }
 const CustomListItemText = (props)=>{
   const [open, setOpen] = React.useState(true);
@@ -115,7 +115,7 @@ const typesToString = types =>{
   if(types.includes("sublocality_level_1")) return "Bairro"
   if(types.includes("administrative_area_level_2")) return "Cidade"
   if(types.includes("administrative_area_level_1")) return "Estado"
-  if(types.includes("country")) return "Pais"
+  if(types.includes("country")) return "País"
   if(types.includes("postal_code")) return "CEP"
   return types.join(" - ")
 }

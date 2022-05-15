@@ -33,9 +33,9 @@ function MapWrapper(props) {
   <Wrapper>
     <InputLabel htmlFor="type">Escolha uma forma para desenhar no mapa</InputLabel>
     <NativeSelect id="type">
-      <option value="Circle">Circulo</option>
+      <option value="Circle">Círculo </option>
       <option value="Square">Quadrado</option>
-      <option value="Box">Retangulo</option>
+      <option value="Box">Retângulo</option>
       <option value="Polygon">Forma Livre</option>
     </NativeSelect>
     <div id="map" className="map" />
