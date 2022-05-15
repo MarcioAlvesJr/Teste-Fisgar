@@ -6,7 +6,7 @@ import InputMask from 'react-input-mask';
 
 
 export const CustomCollapse = ({text}) =>            
-<Collapse in={Boolean(text)}>
+<Collapse component='span'  in={Boolean(text)}>
 {text}
 </Collapse>
 
@@ -37,11 +37,11 @@ const TextField = (props:Props)  => {
   return (
   <>
     
-    <FormControl error={textFieldProps.error} variant={variant as any} {...{multiline, fullWidth}}>
+    <FormControl error={textFieldProps.error} variant={variant as any} {...{fullWidth}}>
         <InputLabel htmlFor={fieldProps.id}>{textFieldProps.label}</InputLabel>
-        {mask === "" && <Input {...fieldProps} />}
+        {mask === "" && <Input {...fieldProps} {...{multiline}}/>}
         {mask !== "" &&<Input {...fieldProps} inputProps={{mask, maskChar: ""}} inputComponent={InputMask as any} />}
-        <FormHelperText><CustomCollapse text={textFieldProps.helperText}/></FormHelperText>
+        <FormHelperText component='div'><CustomCollapse text={textFieldProps.helperText}/></FormHelperText>
     </FormControl>
     
   </>

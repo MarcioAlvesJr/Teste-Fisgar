@@ -4,7 +4,6 @@ import { Backdrop, Badge, Button, CircularProgress, Dialog, DialogActions, Dialo
 import { useMutation } from 'react-query'
 import fetchPlaceInfo from '../../../HTTP/fetchPlaceInfo'
 import { FormValues } from './initialValues'
-import { MapContext } from '../../../App'
 import InboxIcon from '@mui/icons-material/Inbox';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
@@ -18,6 +17,7 @@ import RectangleOutlinedIcon from '@mui/icons-material/RectangleOutlined';
 import PolylineOutlinedIcon from '@mui/icons-material/PolylineOutlined';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import { useAppSelector } from '../../../redux/hooks'
 const figures = {
   Circle : {text: "Circulo", icon: <CircleOutlinedIcon/>} ,
   Square :{text: "Quadrado", icon: <SquareOutlinedIcon/>} ,
@@ -110,12 +110,11 @@ const checkAdress = (data, setAlert, setOpenModal)=>{
 const useConfirmForm = ()=>{
     const [openModal, setOpenModal] = useState(false)
     const {Alert, setAlert} = useAlert()
-    const {drawings} = useContext(MapContext)
     const [values, setValues] = useState<FormValues>()
     const handleClose = ()=> setOpenModal(false)
     const adressInfoMutate = useMutation(fetchPlaceInfo,{onSuccess:(data)=>checkAdress(data, setAlert, setOpenModal)})
+    const {drawings} = useAppSelector(state=>state.map)
 
-    console.log(drawings)
     const onSubmit = (values, actions)=>{
       adressInfoMutate.mutate(values.address.place_id)
       setValues(values)
@@ -158,7 +157,7 @@ const useConfirmForm = ()=>{
                       <FormatShapesIcon />
                     </Badge>
                   </ListItemIcon>
-                  <ListItemText primary="Figuras" secondary="Cordenadas em EPSG:3857 WGS 84 / Pseudo-Mercator" />
+                  <ListItemText primary={drawings.length === 0 ? "Nenhuma Figura Desenhada" : "Figuras Desenhadas"} secondary={drawings.length === 0 ? "": "Cordenadas em EPSG:3857 WGS 84 / Pseudo-Mercator"} />
                 </ListItem>
               </List>
               <List component="div" disablePadding>

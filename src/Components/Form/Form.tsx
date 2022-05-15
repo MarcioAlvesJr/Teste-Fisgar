@@ -32,6 +32,7 @@ const ConfigStepper = ()=>{
 const Form = () => {
   const {Modal, onSubmit} = useConfirmForm()
   const [fieldsWrappeRef, { width }] = useElementSize()
+
   return (
     <>
     <Formik {...formikConfig} {...{onSubmit}} >

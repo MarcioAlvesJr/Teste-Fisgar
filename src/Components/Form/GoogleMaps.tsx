@@ -5,10 +5,13 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/umd/parse';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { debounce, TextField } from '@mui/material';
+import { debounce, TextField, useMediaQuery } from '@mui/material';
 import { useFormikContext } from 'formik';
 import useCheckAdressNumber from './useCheckAdressNumber';
 import { CustomCollapse } from './connectedFields/TextField';
+import { StepperWrapperContext } from '../StepperWrapper/StepperWrapper';
+import { mobileMaxPx } from '../StepperWrapper/StepperWrapper.styles';
+import { useDebounce } from 'usehooks-ts';
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
 function loadScript(src: string, position: HTMLElement | null, id: string) {
@@ -40,6 +43,7 @@ export interface PlaceType {
 }
 
 export default function GoogleMaps({width}) {
+  const {FormMapWrapperWidth} = React.useContext(StepperWrapperContext)
   useCheckAdressNumber()
   const name = "address"
   const formik:any = useFormikContext()
@@ -123,14 +127,22 @@ export default function GoogleMaps({width}) {
       active = false;
     };
   }, [value, inputValue, fetch]);
-  
 
+  const mobile = useMediaQuery(`(max-width:${mobileMaxPx}px)`);
+
+  const autocompleteAutoWidth = useDebounce({
+    //Makes input stretch when parent gets bigger
+    width,
+    //Makes input shrink when parent gets smaller 
+    maxWidth: mobile? `calc(${FormMapWrapperWidth}px)` : 
+    `calc(calc(${FormMapWrapperWidth}px - 1rem) /2)` 
+  }, 1000)
 
 
   return (
     <div id="address-wrapper">
     <Autocomplete
-      sx={{ width }}
+      sx={autocompleteAutoWidth}
       getOptionLabel={(option) =>
         typeof option === 'string' ? option : option.description
       }

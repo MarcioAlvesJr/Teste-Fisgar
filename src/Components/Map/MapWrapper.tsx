@@ -4,7 +4,7 @@ import {Wrapper} from './Map.styles'
 import { createContext, useContext, useEffect, useRef, useState } from "react"
 import { InputLabel,NativeSelect } from '@mui/material';
 import createMap from './createMap';
-import { MapContext } from '../../App';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
 
 
@@ -14,14 +14,15 @@ const deleteMap = ()=>{
   mapElement.removeChild(mapElement?.firstChild)
 }
 function MapWrapper(props) {
-  const {mapCenter, drawings, addDrawing} = useContext(MapContext)
-  const [x, y] = mapCenter ? mapCenter : []
+  const {center, drawings} = useAppSelector(state=>state.map)
+  const dispatch = useAppDispatch()
+  const [x, y] = center ? center : []
 
   const selectedType = useRef("")
 
 
   useEffect(()=>{
-    createMap({selectedType,addDrawing, center: mapCenter, drawings})
+    createMap({selectedType, dispatch , center, drawings})
     return ()=>{
       deleteMap()
     }

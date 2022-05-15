@@ -10,10 +10,11 @@ import Draw, {
   import {Style, Icon} from 'ol/style'
   import { Feature, Overlay } from "ol";
   import { Point } from "ol/geom";
+import { mapActions } from '../../redux/features/map/mapSlice';
 
 const defaultCenter = [-5547493.764825, -1671096.767749]
 
-const createMap = ({selectedType, addDrawing, center, drawings})=>{
+const createMap = ({selectedType, dispatch, center, drawings})=>{
     const raster = new TileLayer({
       source: new OSM(),
     });
@@ -49,7 +50,7 @@ const createMap = ({selectedType, addDrawing, center, drawings})=>{
       }else{
         newDrawing.cordinates = newDrawing.cordinates[0].filter((cordinate, idx, arr)=>idx < arr.length-1)
       }
-      addDrawing(newDrawing)
+      dispatch(mapActions.addDrawing(newDrawing))
   });
     
     const vector = new VectorLayer({
