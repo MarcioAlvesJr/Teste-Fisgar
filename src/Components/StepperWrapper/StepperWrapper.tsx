@@ -15,7 +15,7 @@ const StepperWrapper = (props) => {
           <Paper elevation={24}>
                 <WrapperCard  >
                     <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">Formulario</Typography>
+                    <Typography gutterBottom variant="h5" component="div">Formulário</Typography>
                     <StepperWrapperContext.Provider value={{setActionsBtns, FormMapWrapperWidth}}>
                         <FormMapWrapper ref={FormMapWrapperRef}>{children}</FormMapWrapper>
                     </StepperWrapperContext.Provider>
