@@ -7,7 +7,7 @@ import parse from 'autosuggest-highlight/umd/parse';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { debounce, TextField, useMediaQuery } from '@mui/material';
 import { useFormikContext } from 'formik';
-import useCheckAdressNumber from './useCheckAdressNumber';
+import useCheckAddressNumber from './useCheckAddressNumber';
 import { CustomCollapse } from './connectedFields/TextField';
 import { StepperWrapperContext } from '../StepperWrapper/StepperWrapper';
 import { mobileMaxPx } from '../StepperWrapper/StepperWrapper.styles';
@@ -44,7 +44,7 @@ export interface PlaceType {
 
 export default function GoogleMaps({width}) {
   const {FormMapWrapperWidth} = React.useContext(StepperWrapperContext)
-  useCheckAdressNumber()
+  useCheckAddressNumber()
   const name = "address"
   const formik:any = useFormikContext()
 
@@ -64,7 +64,7 @@ export default function GoogleMaps({width}) {
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
       loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&language=pt-BR`,
+        `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places,geocode&language=pt-BR`,
         document.querySelector('head'),
         'google-maps',
       );

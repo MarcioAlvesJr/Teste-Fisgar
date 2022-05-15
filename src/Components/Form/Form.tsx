@@ -1,16 +1,13 @@
-import { Backdrop, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, List, ListItem, ListItemText } from '@mui/material'
+import { Button } from '@mui/material'
 import { Formik, Form as FormikForm, useFormikContext} from 'formik'
-import { useContext, useEffect, useState } from 'react'
-import { useMutation } from 'react-query'
+import { useContext, useEffect } from 'react'
 import { useElementSize } from 'usehooks-ts'
-import fetchPlaceInfo from '../../HTTP/fetchPlaceInfo'
 import { StepperWrapperContext } from '../StepperWrapper/StepperWrapper'
 import TextField from './connectedFields/TextField'
 import { FieldsWrapper } from './Form.styles'
 import formikConfig from './formikConfig/formikConfig'
-import { FormValues } from './formikConfig/initialValues'
 import useConfirmForm from './formikConfig/useConfirmForm'
-import AdressAutocomplete from './GoogleMaps'
+import AddressAutocomplete from './GoogleMaps'
 
 
 
@@ -38,7 +35,7 @@ const Form = () => {
     <Formik {...formikConfig} {...{onSubmit}} >
       <FormikForm>
         <FieldsWrapper ref={fieldsWrappeRef} >
-          <AdressAutocomplete {...{width}}/>
+          <AddressAutocomplete {...{width}}/>
           <TextField name='name' label='Nome'/>
           <TextField name='CPF' label='CPF' mask={"999.999.999-99"}/>
           <TextField name='email' label='Email'/>

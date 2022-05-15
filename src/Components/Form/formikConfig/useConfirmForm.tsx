@@ -18,6 +18,7 @@ import PolylineOutlinedIcon from '@mui/icons-material/PolylineOutlined';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useAppSelector } from '../../../redux/hooks'
+import InfoIcon from '@mui/icons-material/Info';
 const figures = {
   Circle : {text: "Circulo", icon: <CircleOutlinedIcon/>} ,
   Square :{text: "Quadrado", icon: <SquareOutlinedIcon/>} ,
@@ -101,29 +102,69 @@ const useAlert = ()=>{
     return {Alert, setAlert}
 }
   
-const checkAdress = (data, setAlert, setOpenModal)=>{
+const checkAddress = (data, setAlert, setOpenModal)=>{
     const thereIsStreetNumber = data.results[0]
     .address_components.find(({types}) => types.includes("street_number"))
     if(thereIsStreetNumber) return setOpenModal(true)
     return setAlert(["Endereço Incompleto", "Por favor inclua o número no endereço"])
   }
+
+const typesToString = types =>{
+  if(types.includes("street_number")) return "Número"
+  if(types.includes("route")) return "Rua"
+  if(types.includes("sublocality_level_1")) return "Bairro"
+  if(types.includes("administrative_area_level_2")) return "Cidade"
+  if(types.includes("administrative_area_level_1")) return "Estado"
+  if(types.includes("country")) return "Pais"
+  if(types.includes("postal_code")) return "CEP"
+  return types.join(" - ")
+}
+
+const AddressList = ({addressInfoMutate})=>{
+  const [openAddress, setOpenAddress] = useState(false)
+  const handleClick = () => {
+    setOpenAddress(prev=>!prev);
+  };
+
+  return<>
+                  <ListItemButton onClick={handleClick}>
+                  <ListItemIcon><HomeIcon /></ListItemIcon>
+                  <ListItemText primary="Endereço" secondary={addressInfoMutate.data.results[0].formatted_address}/>
+                  {openAddress ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={openAddress} timeout="auto" unmountOnExit>
+
+                
+                <List component="div" disablePadding>
+                  {addressInfoMutate.data.results[0].address_components.map((address_component, idx)=>{
+                    return(
+                    <ListItem sx={{ pl: 4 }} key={idx}>
+                      <ListItemIcon><InfoIcon /></ListItemIcon>
+                      <ListItemText primary={typesToString(address_component.types)} secondary={address_component.long_name}></ListItemText>
+                    </ListItem>)
+                  })}
+                </List>
+                </Collapse>
+  </>
+}
 const useConfirmForm = ()=>{
     const [openModal, setOpenModal] = useState(false)
     const {Alert, setAlert} = useAlert()
     const [values, setValues] = useState<FormValues>()
     const handleClose = ()=> setOpenModal(false)
-    const adressInfoMutate = useMutation(fetchPlaceInfo,{onSuccess:(data)=>checkAdress(data, setAlert, setOpenModal)})
+    const addressInfoMutate = useMutation(fetchPlaceInfo,{onSuccess:(data)=>checkAddress(data, setAlert, setOpenModal)})
     const {drawings} = useAppSelector(state=>state.map)
 
     const onSubmit = (values, actions)=>{
-      adressInfoMutate.mutate(values.address.place_id)
+      addressInfoMutate.mutate(values.address.place_id)
       setValues(values)
     }
+
     const Modal = ()=>{
   
       return <>
       <Alert/>
-      {adressInfoMutate.data && 
+      {addressInfoMutate.data && 
             <Dialog open={openModal} onClose={handleClose}>
           <DialogTitle>
             Informaçoes a serem enviadas
@@ -131,10 +172,7 @@ const useConfirmForm = ()=>{
           <DialogContent>
             <DialogContentText>
               <List>
-                <ListItem>
-                  <ListItemIcon><HomeIcon /></ListItemIcon>
-                  <ListItemText primary="Endereço" secondary={<>{adressInfoMutate.data && adressInfoMutate.data.results[0].formatted_address}</>}/>
-                </ListItem>
+                <AddressList {...{addressInfoMutate}}/>
                 <ListItem>
                   <ListItemIcon><PersonIcon /></ListItemIcon>
                   <ListItemText primary="Nome" secondary={values?.name}/>
@@ -168,12 +206,12 @@ const useConfirmForm = ()=>{
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button  onClick={handleClose} autoFocus disabled={adressInfoMutate.isLoading}>Ok</Button>
+            <Button  onClick={handleClose} autoFocus disabled={addressInfoMutate.isLoading}>Ok</Button>
           </DialogActions>
         </Dialog>}
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={adressInfoMutate.isLoading}>
+          open={addressInfoMutate.isLoading}>
             <CircularProgress color="inherit" />
         </Backdrop>
       

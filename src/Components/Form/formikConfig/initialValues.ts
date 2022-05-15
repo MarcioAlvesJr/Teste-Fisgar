@@ -7,10 +7,10 @@ export interface FormValues {
     CPF: string,
     email: string,
     message: string,
-    adressType: string
+    addressType: string
 }
 const initialValues : FormValues = {
-    adressType: "",
+    addressType: "",
     address: null,
     name: "",
     CPF: "",
