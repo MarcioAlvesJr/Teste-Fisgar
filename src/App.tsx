@@ -6,10 +6,9 @@ import StepperWrapper from "./Components/StepperWrapper/StepperWrapper";
 
 const useMapState = ()=>{
   const [mapCenter, setMapCenter] = useState()
-  const drawings = useRef<any>([])
+  const [drawings, setDrawings] = useState<any>([])
   const addDrawing = (newDrawing)=>{
-    drawings.current = [...drawings.current, newDrawing]
-    console.log(drawings.current)
+    setDrawings((prev)=>[...prev, newDrawing])
   }
 
 

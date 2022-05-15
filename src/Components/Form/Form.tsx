@@ -9,86 +9,12 @@ import TextField from './connectedFields/TextField'
 import { FieldsWrapper } from './Form.styles'
 import formikConfig from './formikConfig/formikConfig'
 import { FormValues } from './formikConfig/initialValues'
+import useConfirmForm from './formikConfig/useConfirmForm'
 import AdressAutocomplete from './GoogleMaps'
 
 
-const useAlert = ()=>{
-  const [alert, setAlert] = useState([]);
 
 
-  const handleClose = () => {
-    setAlert([]);
-  };
-
-  const Alert = ()=>
-  <Dialog open={alert?.length !== 0}onClose={handleClose}>
-    <DialogTitle id="alert-dialog-title">{alert[0]}</DialogTitle>
-    <DialogContent>
-      <DialogContentText>{alert[1]}</DialogContentText>
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={handleClose} autoFocus>Ok</Button>
-    </DialogActions>
-  </Dialog>
-
-  return {Alert, setAlert}
-}
-const checkAdress = (data, setAlert, setOpenModal)=>{
-  const thereIsStreetNumber = data.results[0]
-  .address_components.find(({types}) => types.includes("street_number"))
-
-  if(thereIsStreetNumber) return setOpenModal(true)
-  return setAlert(["Endereço Incompleto", "Por favor inclua o número no endereço"])
-}
-const useConfirmForm = ()=>{
-  const [openModal, setOpenModal] = useState(false)
-  const {Alert, setAlert} = useAlert()
-
-  const [values, setValues] = useState<FormValues>()
-  const handleClose = ()=> setOpenModal(false)
-  const adressInfoMutate = useMutation(fetchPlaceInfo,{onSuccess:(data)=>checkAdress(data, setAlert, setOpenModal)})
-
-  const onSubmit = (values, actions)=>{
-    adressInfoMutate.mutate(values.address.place_id)
-    setValues(values)
-  }
-  const Modal = ()=>{
-
-    return <>
-    <Alert/>
-    {adressInfoMutate.data && 
-          <Dialog open={openModal} onClose={handleClose}>
-        <DialogTitle>
-          Informaçoes a serem enviadas
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            <List>
-              <ListItem><ListItemText primary="Endereço" secondary={<>
-                {adressInfoMutate.data && adressInfoMutate.data.results[0].formatted_address}
-              </>}/></ListItem>
-              <ListItem><ListItemText primary="Nome" secondary={values?.name}/></ListItem>
-              <ListItem><ListItemText primary="CPF" secondary={values?.CPF}/></ListItem>
-              <ListItem><ListItemText primary="Email" secondary={values?.email}/></ListItem>
-              <ListItem><ListItemText primary="Mensagem" secondary={values?.message}/></ListItem>
-            </List>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button  onClick={handleClose} autoFocus disabled={adressInfoMutate.isLoading}>Ok</Button>
-        </DialogActions>
-      </Dialog>}
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={adressInfoMutate.isLoading}>
-          <CircularProgress color="inherit" />
-      </Backdrop>
-    
-    </>
-  }
-
-  return {Modal, onSubmit}
-}
 
 const ConfigStepper = ()=>{
   const {submitForm} = useFormikContext()
@@ -105,7 +31,7 @@ const ConfigStepper = ()=>{
 }
 const Form = () => {
   const {Modal, onSubmit} = useConfirmForm()
-  const [fieldsWrappeRef, { width, height }] = useElementSize()
+  const [fieldsWrappeRef, { width }] = useElementSize()
   return (
     <>
     <Formik {...formikConfig} {...{onSubmit}} >

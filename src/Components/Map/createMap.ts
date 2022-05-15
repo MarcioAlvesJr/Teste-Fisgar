@@ -25,12 +25,11 @@ const createMap = ({selectedType, addDrawing, center, drawings})=>{
       geometry: new Point(center)
   }))}
     
-    drawings.current.map(drawing=>source.addFeature(drawing.feature))
+    drawings.map(drawing=>source.addFeature(drawing.feature))
   
     source.on('addfeature', function(evt){
       
       const feature : any = evt.feature
-      console.log(feature, feature.getGeometry(), feature.getGeometryName(), feature.constructor)
       const geometry = feature.getGeometry()
       const type = selectedType.current
   
@@ -47,6 +46,8 @@ const createMap = ({selectedType, addDrawing, center, drawings})=>{
             radius: geometry.getRadius()
           }
         }
+      }else{
+        newDrawing.cordinates = newDrawing.cordinates[0].filter((cordinate, idx, arr)=>idx < arr.length-1)
       }
       addDrawing(newDrawing)
   });

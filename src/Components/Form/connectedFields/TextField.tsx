@@ -6,7 +6,7 @@ import InputMask from 'react-input-mask';
 
 
 export const CustomCollapse = ({text}) =>            
-<Collapse in={text}>
+<Collapse in={Boolean(text)}>
 {text}
 </Collapse>
 
