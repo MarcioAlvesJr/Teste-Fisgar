@@ -41,7 +41,7 @@ const TextField = (props:Props)  => {
         <InputLabel htmlFor={fieldProps.id}>{textFieldProps.label}</InputLabel>
         {mask === "" && <Input {...fieldProps} {...{multiline}}/>}
         {mask !== "" &&<Input {...fieldProps} inputProps={{mask, maskChar: ""}} inputComponent={InputMask as any} />}
-        <FormHelperText component='div'><CustomCollapse text={textFieldProps.helperText}/></FormHelperText>
+        <FormHelperText><CustomCollapse text={textFieldProps.helperText}/></FormHelperText>
     </FormControl>
     
   </>

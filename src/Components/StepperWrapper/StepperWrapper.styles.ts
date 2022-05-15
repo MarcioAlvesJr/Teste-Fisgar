@@ -11,6 +11,17 @@ margin: 2rem;
 display: flex;
 justify-content: center;
 align-items: center;
+
+&{
+    animation: fadeIn 1s;
+
+    @keyframes fadeIn{
+        0% {opacity:0;}
+        50% {opacity:0;}
+        100% {opacity:1;}
+    }
+}
+
 `
 
 

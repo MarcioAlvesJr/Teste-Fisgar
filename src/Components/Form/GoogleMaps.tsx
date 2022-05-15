@@ -136,7 +136,7 @@ export default function GoogleMaps({width}) {
     //Makes input shrink when parent gets smaller 
     maxWidth: mobile? `calc(${FormMapWrapperWidth}px)` : 
     `calc(calc(${FormMapWrapperWidth}px - 1rem) /2)` 
-  }, 1000)
+  }, 500)
 
 
   return (
